@@ -1,0 +1,55 @@
+# Install NGSolve from sources. The details may depend of your computer and 
+# OS/distribution. Alternatively, pre-compiled versions of Netgen/NGSolve and
+# ngsxfem can be installed using pip. This may lead to slightly different
+# results due to changes in the Netgen meshing routines.
+
+# For further details and NGSolve cmake options, see the documentation
+# at https://docu.ngsolve.org/nightly/install/install_sources.html
+# A prerequisite here is the Intel Math Kernel Library to use PARDISO as the
+# solver for the arising linear systems.
+
+git clone https://github.com/NGSolve/ngsolve.git src-ngs
+
+cd src-ngs
+git checkout 50716f44f8c36db604aec939e280a8f322138457
+git submodule update --recursive --init
+
+cd ..
+mkdir inst build-ngs build-xfem
+
+cd build-ngs
+
+# Configure build options for NGSolve/Netgen
+
+cmake \
+    -DCMAKE_BUILD_TYPE=RELEASE \
+    -DCMAKE_INSTALL_PREFIX=../inst \
+    -DMKL_ROOT=${MKLROOT} \
+    -DUSE_UMFPACK=ON \
+    -DUSE_MKL=ON \
+    -DUSE_OCC=ON \
+    -DBUILD_OCC=ON \
+    ../src-ngs/
+
+make -j4
+make install
+
+# Now install the add-on ngsxfem. For further details on installing ngsxfem
+# see https://github.com/ngsxfem/ngsxfem/blob/master/INSTALLATION.md
+
+git clone https://github.com/ngsxfem/ngsxfem.git src-xfem
+cd src-xfem
+git checkout 9423b7300cb6fb6533d3fb223931fa465da8ad67
+
+cd ../build-xfem
+
+# Configure build options for ngsfem
+
+cmake \
+    -DCMAKE_INSTALL_PREFIX=../inst \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_NGSOLVE=OFF \
+    $..src-xfem
+
+make -j4
+make install
