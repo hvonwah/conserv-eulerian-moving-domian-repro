@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10951768.svg)](https://doi.org/10.5281/zenodo.10951768)
+
 This repository contains the python scripts to reproduce the computational examples presented in "A conservative Eulerian finite element method for transport and diffusion in moving domains" by M. Olshanskii and H. v. Wahl.
 
 # Files
