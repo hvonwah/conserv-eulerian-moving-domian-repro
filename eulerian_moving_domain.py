@@ -87,7 +87,7 @@ def solve_moving_domain_convection_difusion_bdf1(mesh, k, h_max, dt, t_end, t, l
     def comp_mass_change():
         m = Integrate(gfu * dx, mesh)
         f = Integrate(rhs * dx, mesh)
-        errors_mass.append(m - mass[0] - dt * f)
+        errors_mass.append(m - mass[-1] - dt * f)
         mass.append(m)
         return None
 
